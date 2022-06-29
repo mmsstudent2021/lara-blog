@@ -6,11 +6,13 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -97,6 +99,10 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+        if(Gate::denies('update',$post)){
+            return abort(403,"U are not allowed to update");
+        }
+
         $post->title = $request->title;
         $post->slug = Str::slug($request->title);
         $post->description = $request->description;
@@ -131,6 +137,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+
+        if(Gate::denies('delete',$post)){
+            return abort(403,"U are not allowed to delete");
+        }
+
         $postTitle = $post->title;
         if(isset($post->featured_image)){
             Storage::delete("public/".$post->featured_image);

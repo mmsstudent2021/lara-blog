@@ -4,23 +4,23 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Manage Post</li>
+            <li class="breadcrumb-item active" aria-current="page">Manage User</li>
         </ol>
     </nav>
     <div class="card">
         <div class="card-body">
-            <h4>Post Lists</h4>
+            <h4>User Lists</h4>
             <hr>
             <div class="d-flex justify-content-between mb-3">
                 <div class="">
                     @if(request('keyword'))
                         <span class="mb-0">Search By : " {{ request('keyword') }} "</span>
-                        <a href="{{ route('post.index') }}">
+                        <a href="{{ route('user.index') }}">
                             <i class="bi bi-trash3"></i>
                         </a>
                     @endif
                 </div>
-                <form action="{{ route('post.index') }}" method="get">
+                <form action="{{ route('user.index') }}" method="get">
                     <div class="input-group">
                         <input type="text" class="form-control" name="keyword" required>
                         <button class="btn btn-secondary">
@@ -34,54 +34,54 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th class="w-25">Title</th>
-                    <th>Category</th>
-                    <th>Owner</th>
+                    <th class="w-25">Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
                     <th>Control</th>
                     <th>Created</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($posts as $post)
+                @forelse($users as $user)
                     <tr>
-                        <td>{{ $post->id }}</td>
+                        <td>{{ $user->id }}</td>
                         <td>
-                            {{ $post->title }}
+                            {{ $user->name }}
                         </td>
                         <td>
-                            {{ \App\Models\Category::find($post->category_id)->title }}
+                            {{ $user->email }}
                         </td>
                         <td>
-                            {{ \App\Models\User::find($post->user_id)->name }}
+                            {{ $user->role }}
                         </td>
                         <td>
-                            <a href="{{ route('post.show',$post->id) }}" class="btn btn-sm btn-outline-dark">
+                            <a href="{{ route('user.show',$user->id) }}" class="btn btn-sm btn-outline-dark">
                                 <i class="bi bi-info-circle"></i>
                             </a>
-                            @can("update",$post)
-                            <a href="{{ route('post.edit',$post->id) }}" class="btn btn-sm btn-outline-dark">
-                                <i class="bi bi-pencil"></i>
-                            </a>
+                            @can("update",$user)
+                                <a href="{{ route('user.edit',$user->id) }}" class="btn btn-sm btn-outline-dark">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
                             @endcan
-                            @can("delete",$post)
-                            <form action="{{ route('post.destroy',$post->id) }}" class="d-inline-block" method="post">
-                                @csrf
-                                @method('delete')
-                                <button class="btn btn-sm btn-outline-dark">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </form>
+                            @can("delete",$user)
+                                <form action="{{ route('user.destroy',$user->id) }}" class="d-inline-block" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-sm btn-outline-dark">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
                             @endcan
 
                         </td>
                         <td>
                             <p class="small mb-0 text-black-50">
                                 <i class="bi bi-calendar"></i>
-                                {{ $post->created_at->format("d M Y") }}
+                                {{ $user->created_at->format("d M Y") }}
                             </p>
                             <p class="small mb-0 text-black-50">
                                 <i class="bi bi-clock"></i>
-                                {{ $post->created_at->format("h : m A") }}
+                                {{ $user->created_at->format("h : m A") }}
                             </p>
                         </td>
                     </tr>
@@ -93,7 +93,7 @@
                 </tbody>
             </table>
             <div class="">
-                {{ $posts->onEachSide(1)->links() }}
+                {{ $users->onEachSide(1)->links() }}
             </div>
         </div>
     </div>
