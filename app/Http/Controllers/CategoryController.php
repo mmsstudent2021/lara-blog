@@ -10,6 +10,11 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("testing:5");
+    }
+
     /**
      * Display a listing of the resource.
      *

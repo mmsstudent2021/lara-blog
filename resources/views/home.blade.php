@@ -9,6 +9,8 @@
     <div class="card">
         <div class="card-body">
             This is Home
+            <br>
+            {{ Auth::user() }}
         </div>
     </div>
 @endsection
