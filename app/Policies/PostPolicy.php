@@ -10,6 +10,12 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user){
+        if($user->role === "admin" || $user->role === "editor"){
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view any models.
      *
@@ -30,7 +36,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        //
+        return $user->id === $post->user_id;
     }
 
     /**

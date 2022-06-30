@@ -16,7 +16,9 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
+                    @if(Auth::user()->role != 'author')
                     <th>Owner</th>
+                    @endif
                     <th>Control</th>
                     <th>Created</th>
                 </tr>
@@ -30,9 +32,11 @@
                             <br>
                             <span class="badge bg-secondary">{{ $category->slug }}</span>
                         </td>
+                        @if(Auth::user()->role != 'author')
                         <td>
                             {{ App\Models\User::find($category->user_id)->name }}
                         </td>
+                        @endif
                         <td>
                             @can('update',$category)
                             <a href="{{ route('category.edit',$category->id) }}" class="btn btn-sm btn-outline-dark">
