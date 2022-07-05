@@ -25,7 +25,7 @@ class PostController extends Controller
             $q->orWhere("title","like","%$keyword%")
                 ->orWhere("description","like","%$keyword%");
         })
-            ->when(Auth::user()->role === "author",fn($q)=>$q->where("user_id",Auth::id()))
+            ->when(Auth::user()->isAuthor(),fn($q)=>$q->where("user_id",Auth::id()))
             ->latest("id")
             ->paginate(10)->withQueryString();
         return view('post.index',compact('posts'));

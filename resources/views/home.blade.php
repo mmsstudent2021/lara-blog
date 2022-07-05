@@ -8,7 +8,7 @@
     </nav>
     <div class="card">
         <div class="card-body">
-            This is Home
+            This is Home || {{ Auth::user()->isAuthor() ? "yes" : "no" }}
         </div>
     </div>
 @endsection

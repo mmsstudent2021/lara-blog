@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::latest("id")
-            ->when(Auth::user()->role === "author",fn($q)=>$q->where("user_id",Auth::id()))
+            ->when(Auth::user()->isAuthor(),fn($q)=>$q->where("user_id",Auth::id()))
             ->get();
         return view('category.index',compact('categories'));
     }
