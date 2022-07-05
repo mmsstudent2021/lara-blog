@@ -15,12 +15,12 @@
             <div class="mb-3">
                 <span class="badge bg-secondary">
                     <i class="bi bi-grid"></i>
-                    {{ \App\Models\Category::find($post->category_id)->title }}
+                    {{ $post->category->title }}
                 </span>
 
                 <span class="badge bg-secondary">
                     <i class="bi bi-person"></i>
-                    {{ \App\Models\User::find($post->user_id)->name }}
+                    {{ $post->user->name }}
                 </span>
 
                 <span class="badge bg-secondary">

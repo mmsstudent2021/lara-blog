@@ -59,8 +59,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return abort(404);
-//        return redirect()->route('category.index');
+
+        return $category->posts;
+//        return abort(404);
+        return redirect()->route('category.index');
 
     }
 

@@ -34,7 +34,7 @@
                         </td>
                         @if(Auth::user()->role != 'author')
                         <td>
-                            {{ App\Models\User::find($category->user_id)->name }}
+                            {{ $category->user->name ?? 'unknow' }}
                         </td>
                         @endif
                         <td>

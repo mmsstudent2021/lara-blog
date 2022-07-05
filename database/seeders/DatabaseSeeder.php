@@ -21,7 +21,10 @@ class DatabaseSeeder extends Seeder
     {
 
 
+
+
         $this->call([
+            NationSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
             PostSeeder::class

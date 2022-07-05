@@ -51,11 +51,11 @@
                             {{ $post->title }}
                         </td>
                         <td>
-                            {{ \App\Models\Category::find($post->category_id)->title }}
+                            {{ $post->category->title }}
                         </td>
                         @notAuthor
                         <td>
-                            {{ \App\Models\User::find($post->user_id)->name }}
+                            {{ $post->user->name }}
                         </td>
                         @endnotAuthor
                         <td>
