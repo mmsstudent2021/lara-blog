@@ -77,7 +77,6 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $post->category->slug;
         Gate::authorize('view',$post);
         return view('post.show',compact('post'));
     }
