@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Photo;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -49,6 +50,8 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+
+        //saving post
         $post = new Post();
         $post->title = $request->title;
         $post->slug = Str::slug($request->title);
@@ -64,7 +67,28 @@ class PostController extends Controller
             $post->featured_image = $newName;
         }
 
+//        return $post;
+
         $post->save();
+
+//        return $post;
+
+
+        // saving photo
+        foreach ($request->photos as $photo){
+            // 1.save to storage
+            $newName = uniqid()."_post_photo.".$photo->extension();
+            $photo->storeAs("public",$newName);
+
+            // 2.save to db
+            $photo = new Photo();
+            $photo->post_id = $post->id;
+            $photo->name = $newName;
+            $photo->save();
+        }
+
+
+
 
         return redirect()->route('post.index')->with("status", $post->title .' is added Successfully');
     }
@@ -129,6 +153,19 @@ class PostController extends Controller
 
         $post->update();
 
+        // saving photo
+        foreach ($request->photos as $photo){
+            // 1.save to storage
+            $newName = uniqid()."_post_photo.".$photo->extension();
+            $photo->storeAs("public",$newName);
+
+            // 2.save to db
+            $photo = new Photo();
+            $photo->post_id = $post->id;
+            $photo->name = $newName;
+            $photo->save();
+        }
+
         return redirect()->route('post.index')->with("status", $post->title .' is updated Successfully');
 
     }
@@ -150,6 +187,15 @@ class PostController extends Controller
         if(isset($post->featured_image)){
             Storage::delete("public/".$post->featured_image);
         }
+
+        foreach ($post->photos as $photo){
+            //remove from storage
+            Storage::delete("public/".$photo->name);
+
+            //delete from table
+            $photo->delete();
+        }
+
         $post->delete();
 
         return redirect()->route('post.index')->with("status", $postTitle .' is deleted Successfully');

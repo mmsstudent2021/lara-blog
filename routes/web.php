@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PhotoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/file-test', function () {
+    return \Illuminate\Support\Facades\Storage::allFiles('public');
+});
+
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -29,6 +34,7 @@ Route::get("/test",[HomeController::class,'test'])->name('test');
 Route::middleware("auth")->group(function(){
     Route::resource('/category',CategoryController::class);
     Route::resource('/post',PostController::class);
+    Route::resource('/photo',PhotoController::class);
     Route::resource('/nation',\App\Http\Controllers\NationController::class);
     Route::resource("/user",\App\Http\Controllers\UserController::class)->middleware('isAdmin');
 });

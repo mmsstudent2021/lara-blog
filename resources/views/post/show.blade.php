@@ -34,12 +34,17 @@
             </div>
 
             @isset($post->featured_image)
-                <img src="{{ asset("storage/".$post->featured_image) }}" class="w-100  mb-3" alt="">
+                <img src="{{ asset("storage/".$post->featured_image) }}" height="100" class="rounded  mb-3" alt="">
             @endisset
 
             <p>
                 {{ $post->description }}
             </p>
+
+            @foreach($post->photos as $photo)
+                <img src="{{ asset('storage/'.$photo->name) }}" height="100" class="rounded" alt="">
+            @endforeach
+
             <hr>
             <div class="d-flex justify-content-between align-items-center">
                 <a href="{{ route('post.create') }}" class="btn btn-outline-primary">Create New Post</a>
