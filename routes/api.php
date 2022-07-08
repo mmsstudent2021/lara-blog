@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+use App\Http\Controllers\PostApiController;
+
+// v1, v2
+Route::get("/posts",[PostApiController::class,'index']);
+Route::get("/post/{slug}",[PostApiController::class,'detail']);

@@ -28,7 +28,8 @@ class PostController extends Controller
         })
             ->when(Auth::user()->isAuthor(),fn($q)=>$q->where("user_id",Auth::id()))
             ->latest("id")
-            ->paginate(10)->withQueryString();
+            ->with(['category','user'])
+            ->paginate(30)->withQueryString();
         return view('post.index',compact('posts'));
     }
 

@@ -11958,3 +11958,7 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.gallery {
+  -moz-columns: 3 200px;
+       columns: 3 200px;
+}
