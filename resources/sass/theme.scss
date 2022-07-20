@@ -1,5 +1,19 @@
 
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "~venobox/dist/venobox.css";
 
 @import "bwvariables";
+
+
+$carousel-control-color : $primary;
+
 @import "~bootstrap/scss/bootstrap";
 @import "bootswatch";
+
+
+
+.post-detail-img{
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}
