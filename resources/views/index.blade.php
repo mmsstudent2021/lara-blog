@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-6">
-                <h1 class="text-center">Blog Posts</h1>
+                <h1 class="text-center">Blog Posts (Hein Htet Zan)</h1>
 
                 <div class="">
                     <form class="my-3" method="get">
