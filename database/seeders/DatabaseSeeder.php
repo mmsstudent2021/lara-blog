@@ -25,17 +25,17 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
-//            NationSeeder::class,
-//            UserSeeder::class,
-//            CategorySeeder::class,
+            NationSeeder::class,
+            UserSeeder::class,
+            CategorySeeder::class,
             PostSeeder::class
         ]);
 
-//        $photos = Storage::allFiles("public");
-//        array_shift($photos);
-//        Storage::delete($photos);
-//
-//        echo "\e[93mStorage Cleaned \n";
+        $photos = Storage::allFiles("public");
+        array_shift($photos);
+        Storage::delete($photos);
+
+        echo "\e[93mStorage Cleaned \n";
 
 
 
