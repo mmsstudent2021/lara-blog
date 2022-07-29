@@ -63,7 +63,8 @@ class PostController extends Controller
 
         if($request->hasFile('featured_image')){
             $newName = uniqid()."_featured_image.".$request->file('featured_image')->extension();
-            $request->file('featured_image')->storeAs("public",$newName);
+//            $request->file('featured_image')->storeAs("public",$newName);
+            Storage::putFileAs("public",$request->featured_image,$newName,"public");
 //            $request->featured_image->storeAs();
             $post->featured_image = $newName;
         }
@@ -79,7 +80,8 @@ class PostController extends Controller
         foreach ($request->photos as $photo){
             // 1.save to storage
             $newName = uniqid()."_post_photo.".$photo->extension();
-            $photo->storeAs("public",$newName);
+//            $photo->storeAs("public",$newName);
+            Storage::putFileAs("public",$photo,$newName,"public");
 
             // 2.save to db
             $photo = new Photo();
