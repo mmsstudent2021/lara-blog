@@ -26,8 +26,9 @@ class PageController extends Controller
     public function detail($slug){
 //        return $slug;
         $post = Post::where('slug',$slug)->with(['user','category','photos'])->first();
+        $recentPosts = Post::latest("id")->limit(5)->get();
 //        return $post;
-        return view('detail',compact('post'));
+        return view('detail',compact('post','recentPosts'));
 
     }
 

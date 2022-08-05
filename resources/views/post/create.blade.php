@@ -35,7 +35,7 @@
                         name="category"
                         id="category"
                     >
-                        @foreach(\App\Models\Category::all() as $category)
+                        @foreach($categories as $category)
                             <option
                                 value="{{ $category->id }}"
                                 {{ $category->id == old('category') ? 'selected':'' }}>

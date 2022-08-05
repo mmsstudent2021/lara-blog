@@ -39,7 +39,7 @@
                         id="category"
                         form="postUpdateForm"
                     >
-                        @foreach(\App\Models\Category::all() as $category)
+                        @foreach($categories as $category)
                             <option
                                 value="{{ $category->id }}"
                                 {{ $category->id == old('category',$post->category) ? 'selected':'' }}>

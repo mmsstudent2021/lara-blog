@@ -1,19 +1,14 @@
-@extends('master')
+@extends('templates.master')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-6">
-                <h1 class="text-center">Blog Posts (Hein Htet Zan)</h1>
+
+
+
 
                 <div class="">
-                    <form class="my-3" method="get">
-                        <div class="input-group">
-                            <input type="text" name="keyword" value="{{ request('keyword') }}" class="form-control">
-                            <button class="btn btn-primary">
-                                Search
-                            </button>
-                        </div>
-                    </form>
+
                     @isset($category)
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <p>Filter By : {{ $category->title }}</p>
@@ -26,8 +21,9 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h3>{{ $post->title }}</h3>
+
                             <div class="">
-                                <a href="{{ route('page.category',$post->category->slug) }}" >
+                                <a href="{{ route('page.category',$post->category->slug) }}">
                                     <span class="badge bg-secondary">
                                         {{ $post->category->title }}
                                     </span>
@@ -47,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    @empty
+                @empty
                     <div class="card">
                         <div class="card-body">
                             <h1>There is no posts Yet !</h1>
@@ -56,6 +52,9 @@
                 @endforelse
 
 
+            </div>
+            <div class="col-lg-4">
+                @include('templates.sidebar')
             </div>
             <div class="col-lg-8">
                 {{ $posts->onEachSide(1)->links() }}
