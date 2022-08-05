@@ -34,7 +34,7 @@
             </div>
 
             @isset($post->featured_image)
-                <img src="{{ asset("storage/".$post->featured_image) }}" height="100" class="rounded  mb-3" alt="">
+                <img src="{{ Storage::temporaryUrl($post->featured_image,now()->addMinutes(5)) }}" height="100" class="rounded  mb-3" alt="">
             @endisset
 
             <p>
@@ -42,7 +42,7 @@
             </p>
 
             @foreach($post->photos as $photo)
-                <img src="{{ asset('storage/'.$photo->name) }}" height="100" class="rounded" alt="">
+                <img src="{{ Storage::url($photo->name) }}" height="100" class="rounded  mb-3" alt="">
             @endforeach
 
             <hr>
