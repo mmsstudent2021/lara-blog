@@ -40,7 +40,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        $links = ["post"=>route('post.index'),"create post"=>route('post.create')];
+        return view('post.create',compact('links'));
     }
 
     /**
@@ -119,7 +120,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         Gate::authorize('update',$post);
-        return view('post.edit',compact('post'));
+        $links = ["post"=>route('post.index'),"Edit Post"=>route('post.create')];
+
+        return view('post.edit',compact('post','links'));
     }
 
     /**
