@@ -21,15 +21,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::when(request('keyword'),function($q){
-            $keyword = request('keyword');
-            $q->orWhere("title","like","%$keyword%")
-                ->orWhere("description","like","%$keyword%");
-        })
+        $posts = Post::search()
             ->when(Auth::user()->isAuthor(),fn($q)=>$q->where("user_id",Auth::id()))
             ->latest("id")
-            ->with(['category','user'])
+//            ->with(['category','user','photos'])
             ->paginate(30)->withQueryString();
+        return $posts;
         return view('post.index',compact('posts'));
     }
 
@@ -79,18 +76,27 @@ class PostController extends Controller
 
 
         // saving photo
-        foreach ($request->photos as $photo){
+        $savedPhotos = [];
+        foreach ($request->photos as $key=>$photo){
             // 1.save to storage
             $newName = uniqid()."_post_photo.".$photo->extension();
             $photo->storeAs("public",$newName);
 //            Storage::putFileAs("/",$photo,$newName,'public');
-
-            // 2.save to db
-            $photo = new Photo();
-            $photo->post_id = $post->id;
-            $photo->name = $newName;
-            $photo->save();
+            $savedPhotos[$key] = [
+                "post_id" => $post->id,
+                "name" => $newName
+            ];
         }
+
+//        dd($savedPhotos);
+
+        // 2.save to db
+//        $photo = new Photo();
+//        $photo->post_id = $post->id;
+//        $photo->name = $newName;
+//        $photo->save();
+
+        Photo::insert($savedPhotos);
 
 
 
@@ -108,6 +114,7 @@ class PostController extends Controller
     {
 //        return $post->user;
         Gate::authorize('view',$post);
+        return $post;
         return view('post.show',compact('post'));
     }
 
@@ -190,18 +197,28 @@ class PostController extends Controller
             return abort(403,"U are not allowed to delete");
         }
 
+
+//        dd($post->photos->pluck('id'));
+
         $postTitle = $post->title;
         if(isset($post->featured_image)){
             Storage::delete("public/".$post->featured_image);
         }
 
-        foreach ($post->photos as $photo){
-            //remove from storage
-            Storage::delete("public/".$photo->name);
+//        foreach ($post->photos as $photo){
+//            //remove from storage
+//            Storage::delete("public/".$photo->name);
+//        }
 
-            //delete from table
-            $photo->delete();
-        }
+
+        Storage::delete($post->photos->map(fn($photo)=>"public/".$photo->name)->toArray());
+
+//        Photo::destroy($post->photos->pluck('id'));
+        Photo::where("post_id",$post->id)->delete();
+
+
+        //delete from table
+//        $photo->delete();
 
         $post->delete();
 
