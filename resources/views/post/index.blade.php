@@ -66,13 +66,34 @@
                             </a>
                         @endcan
                         @can("delete",$post)
-                            <form action="{{ route('post.destroy',$post->id) }}" class="d-inline-block" method="post">
+
+                            @trash
+                            <form action="{{ route('post.destroy',[$post->id,"delete"=>"force"]) }}" class="d-inline-block" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-sm btn-outline-dark">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </form>
+
+                            <form action="{{ route('post.destroy',[$post->id,"delete"=>"restore"]) }}" class="d-inline-block" method="post">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-sm btn-outline-dark">
+                                    <i class="bi bi-recycle"></i>
+                                </button>
+                            </form>
+                            @else
+
+                            <form action="{{ route('post.destroy',[$post->id,"delete"=>"soft"]) }}" class="d-inline-block" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-sm btn-outline-dark">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </form>
+
+                            @endtrash
                         @endcan
 
                     </td>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Null_;
 
 class PostController extends Controller
 {
@@ -24,9 +25,10 @@ class PostController extends Controller
         $posts = Post::search()
             ->when(Auth::user()->isAuthor(),fn($q)=>$q->where("user_id",Auth::id()))
             ->latest("id")
+            ->when(request()->trash,fn($q)=>$q->onlyTrashed())
 //            ->with(['category','user','photos'])
             ->paginate(30)->withQueryString();
-        return $posts;
+//        return $posts;
         return view('post.index',compact('posts'));
     }
 
@@ -190,17 +192,23 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
+
+        $post = Post::withTrashed()->findOrFail($id)->first();
 
         if(Gate::denies('delete',$post)){
             return abort(403,"U are not allowed to delete");
         }
 
 
+        $postTitle = $post->title;
+
+
 //        dd($post->photos->pluck('id'));
 
-        $postTitle = $post->title;
+        if(request('delete') === "force"):
+
         if(isset($post->featured_image)){
             Storage::delete("public/".$post->featured_image);
         }
@@ -220,9 +228,28 @@ class PostController extends Controller
         //delete from table
 //        $photo->delete();
 
-        $post->delete();
+        Post::withTrashed()->findOrFail($id)->forceDelete();
 
-        return redirect()->route('post.index')->with("status", $postTitle .' is deleted Successfully');
+        $message = $postTitle .' is deleted Successfully';
+
+        elseif(request('delete')==='restore'):
+
+
+        Post::withTrashed()->findOrFail($id)->restore();
+
+            $message = $postTitle .' is restore Successfully';
+
+
+        else:
+
+            Post::withTrashed()->findOrFail($id)->delete();
+
+            $message = $postTitle .' is moved to trash Successfully';
+
+
+        endif;
+
+        return redirect()->route('post.index')->with("status", $message);
 
     }
 }
