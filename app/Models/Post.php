@@ -64,4 +64,11 @@ class Post extends Model
                 ->orWhere("description","like","%$keyword%");
         });
     }
+
+    protected static function booted()
+    {
+//        static::created(function(){
+//            logger("I created a post");
+//        });
+    }
 }
