@@ -81,8 +81,6 @@ class PostController extends Controller
 
 //        return $post;
 
-        echo $hhz;
-
 
         // saving photo
         $savedPhotos = [];

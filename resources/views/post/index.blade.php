@@ -49,7 +49,7 @@
                         {{ $post->title }}
                     </td>
                     <td>
-                        {{ $post->category->title }}
+                        {{ $post->category_id }}
                     </td>
                     @notAuthor
                     <td>
@@ -98,14 +98,7 @@
 
                     </td>
                     <td>
-                        <p class="small mb-0 text-black-50">
-                            <i class="bi bi-calendar"></i>
-                            {{ $post->created_at->format("d M Y") }}
-                        </p>
-                        <p class="small mb-0 text-black-50">
-                            <i class="bi bi-clock"></i>
-                            {{ $post->created_at->format("h : m A") }}
-                        </p>
+                        {!! $post->time !!}
                     </td>
                 </tr>
             @empty

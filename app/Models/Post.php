@@ -12,6 +12,39 @@ class Post extends Model
 
     protected $with = ['photos','user','category'];
 
+
+    //accessor
+
+//    public function getTitleAttribute($value)
+//    {
+//        return strtoupper($value);
+//    }
+
+
+
+    public function getTimeAttribute(){
+        return " <p class='small mb-0 text-black-50'>
+                     <i class='bi bi-calendar'></i>
+                    {$this->created_at->format('d M Y')}
+                </p>
+                <p class='small mb-0 text-black-50'>
+                    <i class='bi bi-clock'></i>
+                    {$this->created_at->format('h : m A')}
+                </p>
+                        ";
+    }
+
+//    protected $casts = [
+//      "category_id" => "boolean"
+//    ];
+
+    //mutator
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = strtoupper($value);
+    }
+
     public function category(){
         return $this->belongsTo(Category::class);
     }
