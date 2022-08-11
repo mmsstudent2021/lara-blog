@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Photo;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -52,6 +53,10 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
 
+        try {
+
+            DB::beginTransaction();
+
         //saving post
         $post = new Post();
         $post->title = $request->title;
@@ -76,6 +81,8 @@ class PostController extends Controller
 
 //        return $post;
 
+        echo $hhz;
+
 
         // saving photo
         $savedPhotos = [];
@@ -99,6 +106,14 @@ class PostController extends Controller
 //        $photo->save();
 
         Photo::insert($savedPhotos);
+
+            DB::commit();
+
+        }catch (\Exception $error){
+
+            DB::rollBack();
+
+        }
 
 
 
